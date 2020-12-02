@@ -5,14 +5,19 @@ private String message;
 private String image;
 private String name;
 private String profilePic;
+private int likeCount;
+private int postId;
 
 
-public Feed(String message, String image, String name, String profilePic) {
+public Feed(String message, String image, String name, String profilePic, int likeCount, int postId) {
 	super();
 	this.message = message;
 	this.image = image;
 	this.name = name;
 	this.profilePic = profilePic;
+	this.likeCount = likeCount;
+	this.postId =postId;
+	
 }
 public void setMessage(String message) {
 	this.message = message;
@@ -37,6 +42,18 @@ public String getName() {
 }
 public String getProfilePic() {
 	return profilePic;
+}
+public int getLikeCount() {
+	return likeCount;
+}
+public void setLikeCount(int likeCount) {
+	this.likeCount = likeCount;
+}
+public int getPostId() {
+	return postId;
+}
+public void setPostId(int postId) {
+	this.postId = postId;
 }
 
 }

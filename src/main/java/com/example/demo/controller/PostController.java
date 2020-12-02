@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.Feed;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
+import com.example.demo.repository.LikeRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class PostController {
@@ -28,6 +29,9 @@ public class PostController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private LikeRepository likeRepository;
 		
 	@GetMapping("/fb")
 	public List<Feed> getAllPost(){
@@ -35,7 +39,7 @@ public class PostController {
 		List<Post> myPost = postRepository.findAll();
 		for (Post post : myPost) {
 			userRepository.findById(post.getUser().getId()).map(user -> 
-			 myFeed.add(new Feed(post.getMessage(), post.getImage(), user.getName(), user.getProfilePic())));
+			 myFeed.add(new Feed(post.getMessage(), post.getImage(), user.getName(), user.getProfilePic(), likeRepository.getLikeCountByPostId(post.getId()) ,post.getId()) ));
 		}
 		return myFeed;
 	}
@@ -45,7 +49,7 @@ public class PostController {
 		return userRepository.findById(userId).map(user -> {
 			post.setUser(user);
 			postRepository.save(post);
-			return new Feed(post.getMessage(), post.getImage(), user.getName(), user.getProfilePic());
+			return new Feed(post.getMessage(), post.getImage(), user.getName(), user.getProfilePic(),0,post.getId());
 		}).orElseThrow(()->new RuntimeException());		
 	}
 	
